@@ -9,6 +9,9 @@ import testRoutes from "./routes/testRoutes.js";
 import grievanceRoutes from "./routes/grievanceRoutes.js";
 import escalationJob from "./jobs/escalationJob.js";
 import auditRoutes from "./routes/auditRoutes.js";
+import userRoutes from "./routes/userRoutes.js"
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 connectDB();
 escalationJob();
@@ -21,6 +24,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Grievance is running...");
@@ -54,6 +58,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/test", testRoutes);
 app.use("/api/grievances", grievanceRoutes);
 app.use("/api/audit", auditRoutes);
+app.use("/api", userRoutes);
 
 
 const PORT = process.env.PORT || 5000;

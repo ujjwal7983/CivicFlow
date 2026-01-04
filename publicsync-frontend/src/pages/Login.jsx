@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import Navbar from "../components/Navbar"
 
 const Login = () => {
   const { login } = useAuth();
@@ -20,6 +21,7 @@ const Login = () => {
 
   return (
     <div>
+      <Navbar/>
       <h2>Login</h2>
 
       <form onSubmit={handleSubmit}>

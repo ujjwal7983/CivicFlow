@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 /**
- * helper: generate token + set cookie
+ * helper: generate token + set cookie + return token in response (for testing)
  */
 const sendToken = (res, user, statusCode, message) => {
   const token = jwt.sign(
@@ -12,15 +12,17 @@ const sendToken = (res, user, statusCode, message) => {
     { expiresIn: "1d" }
   );
 
+  // cookie for browser
   res.cookie("token", token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   res.status(statusCode).json({
     message,
+    token, // ✅ IMPORTANT (Thunder / Postman)
     user: {
       id: user._id,
       name: user.name,
@@ -31,8 +33,7 @@ const sendToken = (res, user, statusCode, message) => {
 };
 
 /**
- * REGISTER
- * Public user → ONLY CITIZEN
+ * REGISTER (only CITIZEN)
  */
 export const registerUser = async (req, res) => {
   try {
@@ -53,12 +54,10 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "CITIZEN", //security fix
+      role: "CITIZEN",
     });
 
-    // auto-login after register
     sendToken(res, user, 201, "User registered successfully");
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -88,7 +87,6 @@ export const loginUser = async (req, res) => {
     }
 
     sendToken(res, user, 200, "Login successful");
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

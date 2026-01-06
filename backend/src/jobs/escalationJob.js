@@ -1,5 +1,7 @@
 import cron from "node-cron";
 import Grievance from "../models/Grievance.js";
+import createAuditLog from "../utils/createAuditLog.js";
+
 
 const IN_PROGRESS_SLA_HOURS = 72;
 const MAX_ESCALATION_LEVEL = 3;
@@ -27,6 +29,19 @@ const escalationJob = () => {
         grievance.lastEscalatedAt = new Date();
 
         await grievance.save();
+
+      // ESCALATED AUDIT LOG (SYSTEM)
+      await createAuditLog({
+        grievanceId: grievance._id,
+        action: "ESCALATED",
+        performedBy: null,
+        role: "SYSTEM",
+        meta: {
+          escalationLevel: grievance.escalationLevel,
+          slaHours: IN_PROGRESS_SLA_HOURS,
+          reason: "IN_PROGRESS SLA breached",
+        },
+      });
 
         console.log(`⚠️ Escalated grievance ${grievance._id}`);
       }

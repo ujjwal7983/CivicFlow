@@ -1,26 +1,39 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 const protect = (req, res, next) => {
-    let token;
+  let token;
 
-    if (req.cookies && req.cookies.token) {
-        try {
-            token = req.cookies.token;
+  // 1️⃣ Authorization header (Thunder / Postman)
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  // 2️⃣ Cookie based auth (Browser)
+  else if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  }
 
-            req.user = {
-                id: decoded.id,
-                role: decoded.role,
-            };
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "No token, authorization denied" });
+  }
 
-            next();
-        } catch (error) {
-            return res.status(401).json({ message: "Invalid token" });
-        }
-    } else {
-        return res.status(401).json({ message: "No token, authorization denied" });
-    }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = {
+      id: decoded.id,
+      role: decoded.role,
+    };
+
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
 };
 
 export default protect;

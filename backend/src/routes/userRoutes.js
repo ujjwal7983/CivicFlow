@@ -5,7 +5,7 @@ import User from "../models/User.js"
 
 const router = express.Router();
 
-router.get("/home",protect,authorize("CITIZEN"),
+router.get("/citizen",protect,authorize("CITIZEN"),
     async (req, res) => {
         try {
       const user = await User.findById(req.user.id).select(

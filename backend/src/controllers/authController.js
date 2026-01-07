@@ -22,7 +22,7 @@ const sendToken = (res, user, statusCode, message) => {
 
   res.status(statusCode).json({
     message,
-    token, // ✅ IMPORTANT (Thunder / Postman)
+    token, // 
     user: {
       id: user._id,
       name: user.name,

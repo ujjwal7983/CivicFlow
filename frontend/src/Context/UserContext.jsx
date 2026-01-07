@@ -8,7 +8,7 @@ function UserContext({children}) {
 
     const currentUserData = async () =>{
         try {
-            let result = await axios.get(serverUrl+"/api/home",{withCredentials:true} );
+            let result = await axios.get(serverUrl+"/api/citizen",{withCredentials:true} );
             setUserData(result.data.user);
             console.log("Current User Data:", result.data);
         } catch(err) {

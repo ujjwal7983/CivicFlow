@@ -1,4 +1,8 @@
 import React from 'react'
+import {userDataContext} from '../Context/UserContext'
+import {authDataContext} from '../Context/AuthContext'
+import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 function Register() {
   let [name, setName] = React.useState("");
@@ -7,6 +11,36 @@ function Register() {
   let [password, setPassword] = React.useState("");
   let [showPass, setShowPass] = React.useState(false);
   let [loading, setLoading] = React.useState(false);
+  let [show, setShow] = React.useState(false);
+  let {userData, setUserData} = React.useContext(userDataContext);
+  let {serverUrl} = React.useContext(authDataContext);
+  let [err,setErr] = React.useState("");
+  let navigate = useNavigate();
+
+  const handleRegister = async(e) => {
+    e.preventDefault();
+    setLoading(true);
+    try{
+      let res = await axios.post(serverUrl+"/api/auth/register",{
+        name,
+        email,
+        password,
+        role : selectedRole.toUpperCase()
+      },{withCredentials : true});
+      console.log(true);
+      setUserData(res.data.user);
+      navigate("/citizen")
+      setName("");
+      setEmail("");
+      setPassword("");
+      setRole("");
+      setLoading(false);
+    } catch (err) {
+      setErr(err.response?.data?.message || err.message);
+      setLoading(false);
+      console.log("Error during signup:", err)
+    }
+  }
 
   return (
     <div className="bg-[#F3F2F0] flex justify-center items-center w-full min-h-screen px-4">
@@ -15,7 +49,7 @@ function Register() {
 
         <div className="text-3xl font-bold">Register</div>
 
-        <form className="w-full">
+        <form className="w-full" onSubmit={handleRegister}>
           <label className="text-lg font-medium">Name:</label>
           <input
             type="text"

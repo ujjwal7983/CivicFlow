@@ -25,7 +25,7 @@ function Login() {
         },{withCredentials:true});
         console.log(res);
         setUserData(res.data);
-        navigate('/home');
+        navigate('/citizen');
         setEmail("");
         setPassword("");
         setLoading(false);

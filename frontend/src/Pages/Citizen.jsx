@@ -1,13 +1,17 @@
-import React from 'react'
+import {useContext} from 'react'
 import Navbar from '../Components/Navbar'
 import { MdReportProblem, MdTrackChanges } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import RegisterGrievance from '../Components/RegisterGrievance';
+import {userDataContext} from '../Context/UserContext'
 
 function Citizen() {
   const navigate = useNavigate();
+  let {grievance, setGrievance, userData, setUserData} = useContext(userDataContext)
 
   return (
     <>
+    {grievance && <RegisterGrievance/>}
       <Navbar />
 
       <div className="bg-[#F3F2F0] w-full min-h-screen pt-[65px] px-4 sm:px-6 lg:px-12">
@@ -16,7 +20,7 @@ function Citizen() {
 
           {/* Raise Complaint */}
           <div
-            onClick={() => navigate("/citizen/raise-complaint")}
+            onClick={() => setGrievance(true)}
             className="w-full max-w-[360px] h-[250px] cursor-pointer
               rounded-2xl border border-red-200
               bg-gradient-to-br from-red-50 via-white to-red-100

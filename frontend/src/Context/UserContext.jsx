@@ -5,6 +5,7 @@ export const userDataContext = createContext();
 function UserContext({children}) {
     let [userData, setUserData] = useState(null);
     let {serverUrl} = useContext(authDataContext);
+    let [grievance, setGrievance] = useState(false);
 
     const currentUserData = async () =>{
         try {
@@ -22,11 +23,9 @@ function UserContext({children}) {
     }, []);
 
   return (
-    <div>
-        <userDataContext.Provider value={{userData, setUserData}}>
+        <userDataContext.Provider value={{userData, setUserData, grievance, setGrievance}}>
       {children}
         </userDataContext.Provider>
-    </div>
   )
 }
 

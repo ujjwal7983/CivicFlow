@@ -43,7 +43,7 @@ function Citizen() {
 
           {/* Track Complaints */}
           <div
-            onClick={() => navigate("/citizen/my-complaints")}
+            onClick={() => navigate("/my")}
             className="w-full max-w-[360px] h-[250px] cursor-pointer
               rounded-2xl border border-teal-200
               bg-gradient-to-br from-teal-50 via-white to-teal-100

@@ -35,7 +35,7 @@ function Navbar() {
   return (
     <div className="w-full h-[65px] bg-white flex justify-around items-center p-[10px] fixed z-[100]">
         <div className="font-serif lg:text-[30px] font-semibold sm:text-[20px]">Civic Flow</div>
-        <div className="font-serif lg:text-[20px] sm:text-[12px]">Welcome Back, <span className="font-bold">{userData?.name}</span> </div>
+        {userData && <div className="font-serif lg:text-[20px] sm:text-[12px]">Welcome Back, <span className="font-bold">{userData?.name}</span> </div>}
         {!userData ? (
   
         <button

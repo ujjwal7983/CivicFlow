@@ -51,7 +51,7 @@ function Navbar() {
     }
   return (
     <div className="w-full h-[65px] bg-white flex justify-around items-center p-[10px] fixed z-[100]">
-        <div><img src={logo} className="w-[40px] h-[40px] md:w-[70px] md:h-[70px]"/></div>
+        <div onClick={()=>navigate("/")} className="cursor-pointer"><img src={logo} className="w-[40px] h-[40px] md:w-[70px] md:h-[70px]"/></div>
         {userData && <div className="font-serif md:text-[20px] sm:text-[12px]">Welcome Back, <span className="font-bold">{userData?.name}</span> </div>}
         {!userData ? (
   
@@ -60,7 +60,7 @@ function Navbar() {
             className="px-4 py-2 font-medium inline-flex items-center gap-2
                      bg-emerald-600 text-white border border-emerald-600
                        rounded-lg transition-all duration-200 hover:bg-emerald-700 hover:shadow-md">
-                    <span className="hidden sm:inline">Log In</span>
+                    <span className="sm:inline">Log In</span>
         </button>
         ) : (
         <div className="flex items-center gap-3">

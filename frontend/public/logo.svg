@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Outer Civic Circle -->
+  <circle cx="256" cy="256" r="220" fill="#0A66C2"/>
+
+  <!-- Inner Ring -->
+  <circle cx="256" cy="256" r="185" fill="#ffffff"/>
+
+  <!-- Flow Arrows -->
+  <path d="M256 90
+           A166 166 0 0 1 422 256"
+        fill="none" stroke="#2E7D32" stroke-width="14" stroke-linecap="round"/>
+
+  <polygon points="408,248 432,256 408,264" fill="#2E7D32"/>
+
+  <path d="M256 422
+           A166 166 0 0 1 90 256"
+        fill="none" stroke="#0A66C2" stroke-width="14" stroke-linecap="round"/>
+
+  <polygon points="104,264 80,256 104,248" fill="#0A66C2"/>
+
+  <!-- Government Building -->
+  <rect x="206" y="180" width="100" height="90" rx="6" fill="#0A66C2"/>
+  <rect x="226" y="200" width="15" height="50" fill="#ffffff"/>
+  <rect x="248" y="200" width="15" height="50" fill="#ffffff"/>
+  <rect x="270" y="200" width="15" height="50" fill="#ffffff"/>
+
+  <!-- Check Mark (Resolved) -->
+  <path d="M210 300L245 330L305 265"
+        fill="none" stroke="#2E7D32" stroke-width="14"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>

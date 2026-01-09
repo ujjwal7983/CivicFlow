@@ -1,103 +1,94 @@
-import React from 'react'
-import {userDataContext} from '../Context/UserContext'
-import {authDataContext} from '../Context/AuthContext'
-import {useNavigate} from 'react-router-dom'
-import axios from 'axios'
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { userDataContext } from "../Context/UserContext";
+import { authDataContext } from "../Context/AuthContext";
 
 function Register() {
-  let [name, setName] = React.useState("");
-  let [email, setEmail] = React.useState("");
-  let [selectedRole, setRole] = React.useState("");
-  let [password, setPassword] = React.useState("");
-  let [showPass, setShowPass] = React.useState(false);
-  let [loading, setLoading] = React.useState(false);
-  let [show, setShow] = React.useState(false);
-  let {userData, setUserData} = React.useContext(userDataContext);
-  let {serverUrl} = React.useContext(authDataContext);
-  let [err,setErr] = React.useState("");
-  let navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
 
-  const handleRegister = async(e) => {
+  const { userData, setUserData } = useContext(userDataContext);
+  const { serverUrl } = useContext(authDataContext);
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try{
-      let res = await axios.post(serverUrl+"/api/auth/register",{
-        name,
-        email,
-        password,
-        role : selectedRole.toUpperCase()
-      },{withCredentials : true});
-      console.log(true);
+    setErr("");
+
+    try {
+      const res = await axios.post(
+        serverUrl + "/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+
       setUserData(res.data.user);
-      navigate("/citizen")
+      navigate("/citizen", { replace: true });
+
+      // clear form
       setName("");
       setEmail("");
       setPassword("");
-      setRole("");
+    } catch (error) {
+      setErr(error.response?.data?.message || error.message);
+      console.error("Error during registration:", error);
+    } finally {
       setLoading(false);
-    } catch (err) {
-      setErr(err.response?.data?.message || err.message);
-      setLoading(false);
-      console.log("Error during signup:", err)
     }
-  }
+  };
 
   return (
     <div className="bg-[#F3F2F0] flex justify-center items-center w-full min-h-screen px-4">
-
       <div className="w-full max-w-[400px] shadow-lg bg-white flex flex-col justify-center items-center gap-5 p-6 rounded-lg">
-
         <div className="text-3xl font-bold">Register</div>
+
+        {err && (
+          <div className="w-full text-red-600 bg-red-100 p-2 rounded-lg text-center">
+            {err}
+          </div>
+        )}
 
         <form className="w-full" onSubmit={handleRegister}>
           <label className="text-lg font-medium">Name:</label>
           <input
             type="text"
-            placeholder="your name"
+            placeholder="Your name"
             className="mb-4 border border-gray-400 w-full h-10 p-2 rounded-lg"
-            value={name} onChange={(e) => setName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
 
           <label className="text-lg font-medium">Email:</label>
           <input
             type="email"
-            placeholder="enter email"
+            placeholder="Enter email"
             className="mb-4 border border-gray-400 w-full h-10 p-2 rounded-lg"
-            value={email} onChange={(e)=>setEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
-          <label className="text-lg font-medium mb-2 block">Role:</label>
-
-          <div className="mb-4 flex flex-col gap-2">
-            {["Citizen", "Admin", "Officer", "Head"].map((role) => (
-              <label
-                key={role}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <input
-                  type="radio"
-                  name="role"
-                  value={role}
-                  checked={selectedRole === role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="accent-blue-600"
-                />
-                <span className="text-gray-700">{role}</span>
-              </label>
-            ))}
-          </div>
-
-
           <label className="text-lg font-medium">Password:</label>
-
           <div className="relative">
             <input
               type={showPass ? "text" : "password"}
               placeholder="Enter password"
               className="border border-gray-400 w-full h-10 p-2 rounded-lg pr-12"
-              value={password} onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
-
             <button
               type="button"
               onClick={() => setShowPass(!showPass)}
@@ -107,15 +98,24 @@ function Register() {
             </button>
           </div>
 
-          <button disabled={loading} className="w-full font-semibold bg-blue-500 text-white h-10 mt-6 rounded-lg">
-            {loading ? "Loading..." : "Register"}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full font-semibold bg-blue-500 text-white h-10 mt-6 rounded-lg hover:bg-blue-600 transition-all"
+          >
+            {loading ? "Registering..." : "Register"}
           </button>
-
         </form>
-        <div>Already have an account? <a href="/login" className="text-blue-600">Login</a></div>
+
+        <div className="text-sm">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-600">
+            Login
+          </a>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;

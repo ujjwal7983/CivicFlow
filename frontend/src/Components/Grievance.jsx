@@ -29,7 +29,7 @@ function Grievance({ title, department, status }) {
         {title}
       </div>
 
-      <div className="flex-1 text-center text-gray-600">
+      <div className="flex-1 text-center text-gray-600 hidden md:inline-block">
         {department}
       </div>
 

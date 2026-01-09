@@ -1,5 +1,7 @@
 import React from 'react'
 import { LiaSignOutAltSolid } from "react-icons/lia";
+import { MdDashboard } from "react-icons/md";
+import logo from '../assets/logo.png'
 import {userDataContext} from '../Context/UserContext'
 import {authDataContext} from '../Context/AuthContext'
 import {useNavigate} from 'react-router-dom'
@@ -21,9 +23,24 @@ function Navbar() {
         }
     }
 
-    const citizen = async ()=>{
-        navigate('/citizen');
-    }
+    const goToDashboard = () => {
+        if (!userData) return;
+
+        switch (userData.role) {
+            case "ADMIN":
+                navigate("/admin");
+                break;
+            case "OFFICER":
+                navigate("/officer");
+                break;
+            case "CITIZEN":
+                navigate("/citizen");
+                break;
+            default:
+                navigate("/");
+        }
+    };
+
 
     if (loading) {
     return (
@@ -34,8 +51,8 @@ function Navbar() {
     }
   return (
     <div className="w-full h-[65px] bg-white flex justify-around items-center p-[10px] fixed z-[100]">
-        <div className="font-serif lg:text-[30px] font-semibold sm:text-[20px]">Civic Flow</div>
-        {userData && <div className="font-serif lg:text-[20px] sm:text-[12px]">Welcome Back, <span className="font-bold">{userData?.name}</span> </div>}
+        <div><img src={logo} className="w-[40px] h-[40px] md:w-[70px] md:h-[70px]"/></div>
+        {userData && <div className="font-serif md:text-[20px] sm:text-[12px]">Welcome Back, <span className="font-bold">{userData?.name}</span> </div>}
         {!userData ? (
   
         <button
@@ -47,11 +64,12 @@ function Navbar() {
         </button>
         ) : (
         <div className="flex items-center gap-3">
-            <button onClick={citizen} className="px-4 py-2 font-medium inline-flex 
+            <button onClick={goToDashboard} className="px-4 py-2 font-medium inline-flex 
                                     items-center gap-2 bg-slate-100 text-slate-800
                                     border border-slate-300 rounded-lg transition-all 
                                     duration-200 hover:bg-slate-200 hover:shadow-sm">
-                <span className="hidden sm:inline">Dashboard</span>
+                <span className="hidden md:inline">Dashboard</span>
+                <MdDashboard className="text-lg" />
             </button>
 
             <button onClick={handleSignOut} className="px-4 py-2 font-medium inline-flex 

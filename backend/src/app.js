@@ -58,7 +58,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/test", testRoutes);
 app.use("/api/grievances", grievanceRoutes);
 app.use("/api/audit", auditRoutes);
-app.use("/api", userRoutes);
+app.use("/api/auth", userRoutes);
 
 
 const PORT = process.env.PORT || 5000;

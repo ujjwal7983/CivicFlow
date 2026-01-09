@@ -1,32 +1,68 @@
-import {useState,createContext, useContext, useEffect} from 'react'
-import {authDataContext} from './AuthContext.jsx'
-import axios from 'axios';
+import { useState, createContext, useContext, useEffect } from "react";
+import { authDataContext } from "./AuthContext.jsx";
+import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
+
 export const userDataContext = createContext();
-function UserContext({children}) {
-    let [userData, setUserData] = useState(null);
-    let {serverUrl} = useContext(authDataContext);
-    let [grievance, setGrievance] = useState(false);
 
-    const currentUserData = async () =>{
-        try {
-            let result = await axios.get(serverUrl+"/api/citizen",{withCredentials:true} );
-            setUserData(result.data.user);
-            console.log("Current User Data:", result.data);
-        } catch(err) {
-            console.log("Error in fetching user data", err);
-            setUserData(null);
-        }
+function UserContext({ children }) {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [grievance, setGrievance] = useState(false);
+
+  const { serverUrl } = useContext(authDataContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Fetch current logged-in user from backend
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(serverUrl + "/api/auth/me", {
+          withCredentials: true,
+        });
+        setUserData(res.data.user); // {id, name, role}
+      } catch (err) {
+        setUserData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [serverUrl]);
+
+  // Redirect based on role only if on /login or /register
+  useEffect(() => {
+    if (loading) return;
+    if (!userData) return;
+
+    const path = location.pathname;
+
+    if (path === "/login" || path === "/register") {
+      switch (userData.role) {
+        case "ADMIN":
+          navigate("/admin", { replace: true });
+          break;
+        case "OFFICER":
+          navigate("/officer", { replace: true });
+          break;
+        case "CITIZEN":
+          navigate("/citizen", { replace: true });
+          break;
+        default:
+          navigate("/", { replace: true });
+      }
     }
-
-    useEffect(() => { 
-        currentUserData();
-    }, []);
+  }, [userData, loading, navigate, location.pathname]);
 
   return (
-        <userDataContext.Provider value={{userData, setUserData, grievance, setGrievance}}>
+    <userDataContext.Provider
+      value={{ userData, setUserData, grievance, setGrievance, loading }}
+    >
       {children}
-        </userDataContext.Provider>
-  )
+    </userDataContext.Provider>
+  );
 }
 
-export default UserContext
+export default UserContext;

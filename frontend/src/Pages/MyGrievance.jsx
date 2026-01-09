@@ -38,7 +38,7 @@ function MyGrievance() {
           font-semibold text-gray-500
         ">
           <div className="flex-1 text-left">Title</div>
-          <div className="flex-1 text-center">Department</div>
+          <div className="flex-1 text-center hidden md:inline-block">Department</div>
           <div className="flex-1 text-right">Status</div>
         </div>
 

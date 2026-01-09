@@ -53,7 +53,7 @@ function MyGrievance() {
         )}
 
         {grievances.map((grievance,idx)=>(
-            <div key="idx"><Grievance title={grievance.title} department={grievance.department} status={grievance.status} /></div>
+            <div key={idx}><Grievance title={grievance.title} department={grievance.department} status={grievance.status} /></div>
         ))}
 
       </div>

@@ -9,6 +9,7 @@ function UserContext({ children }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [grievance, setGrievance] = useState(false);
+  const [officer, setOfficer] = useState(false);
 
   const { serverUrl } = useContext(authDataContext);
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function UserContext({ children }) {
 
   return (
     <userDataContext.Provider
-      value={{ userData, setUserData, grievance, setGrievance, loading }}
+      value={{ userData, setUserData, grievance, setGrievance, loading, officer, setOfficer }}
     >
       {children}
     </userDataContext.Provider>

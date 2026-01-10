@@ -16,7 +16,7 @@ function Navbar() {
         try{
             await axios.get(serverUrl+"/api/auth/signout",{withCredentials : true});
             setUserData(null);
-            navigate("/")
+            window.location.href = "/";
         } catch(err){
             console.error("Error during logout:", err.message);
             alert("Logout failed");

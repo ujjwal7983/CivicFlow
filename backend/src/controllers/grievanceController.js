@@ -51,6 +51,49 @@ export const getMyGrievances = async (req, res) => {
   }
 };
 
+// ------------------ GET ALL GRIEVANCE (ADMIN) ------------------
+
+export const getAllGrievances = async (req, res) => {
+  try {
+    const grievances = await Grievance.aggregate([
+      {
+        $addFields: {
+          statusOrder: {
+            $indexOfArray: [
+              [
+                "SUBMITTED",
+                "ASSIGNED",
+                "IN_PROGRESS",
+                "RESOLVED",
+                "ESCALATED",
+                "CLOSED"
+              ],
+              "$status"
+            ]
+          }
+        }
+      },
+      {
+        $sort: {
+          statusOrder: 1, 
+          createdAt: 1      
+        }
+      },
+      {
+        $project: { statusOrder: 0 }
+      }
+    ]);
+
+    res.status(200).json({
+      count: grievances.length,
+      grievances
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
 // ------------------ ASSIGN GRIEVANCE (ADMIN) ------------------
 export const assignGrievance = async (req, res) => {
   try {

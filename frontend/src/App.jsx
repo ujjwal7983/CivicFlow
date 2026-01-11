@@ -11,6 +11,7 @@ import Unauthorized from "./Pages/Unauthorized.jsx";
 
 import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import { userDataContext } from "./Context/UserContext.jsx";
+import AllGrievance from "./Pages/AllGrievance.jsx";
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -55,6 +56,15 @@ function App() {
         element={
           <ProtectedRoute allowedRoles={["ADMIN"]}>
             <Admin />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route 
+        path="/allGrievances"
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AllGrievance />
           </ProtectedRoute>
         }
       />

@@ -1,54 +1,101 @@
-import {useContext, useEffect, useState} from 'react';
-import {authDataContext} from '../Context/AuthContext';
-import axios from 'axios'
+import { useContext, useEffect, useState } from 'react';
+import { authDataContext } from '../Context/AuthContext';
+import axios from 'axios';
 
 function DataPanel() {
-    let {serverUrl} = useContext(authDataContext);
-    let [users, setUsers] = useState(0);
-    let [officers, setOfficers] = useState(0);
-    let [solved, setSolved] = useState(0);
-    let [unsolved, setUnsolved] = useState(0);
+  const { serverUrl } = useContext(authDataContext);
 
-    const getData = async () =>{
-        try {
-            let res = await axios.get(serverUrl+"/api/grievances/getData",{withCredentials:true});
-            setUsers(res.data.citizenCount);
-            setOfficers(res.data.officersCount);
-            setSolved(res.data.solvedCount);
-            setUnsolved(res.data.unSolvedCount);
-        } catch (err) {
-            console.log(err);
-        }
+  const [users, setUsers] = useState(0);
+  const [officers, setOfficers] = useState(0);
+  const [solved, setSolved] = useState(0);
+  const [unsolved, setUnsolved] = useState(0);
+
+  const getData = async () => {
+    try {
+      const res = await axios.get(
+        serverUrl + "/api/grievances/getData",
+        { withCredentials: true }
+      );
+
+      setUsers(res.data.citizenCount);
+      setOfficers(res.data.officersCount);
+      setSolved(res.data.solvedCount);
+      setUnsolved(res.data.unSolvedCount);
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    useEffect(()=>{
-        getData();
-    })
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
-    <div className="w-full mt-8 flex justify-center items-center gap-4">
-      <div className="bg-red-500 h-[100px] w-[20%] rounded-md 
-      text-white flex flex-col justify-center items-center">
-        <div className="text-[45px] font-bold">{unsolved}</div>
-        <div className="md:text-[20px] text-[10px] font-semibold text-center">Pending Grievances</div>
-      </div>
+    <div className="w-full mt-10 px-4">
+      <div
+        className="
+          flex gap-4 overflow-x-auto pb-3
+          sm:grid sm:grid-cols-2
+          lg:grid-cols-4
+        "
+      >
 
-      <div className="bg-green-400 h-[100px] w-[20%] rounded-md 
-      text-white flex flex-col justify-center items-center">
-        <div className="text-[45px] font-bold">{solved}</div>
-        <div className="md:text-[20px] text-[10px] font-semibold text-center">Solved Grievances</div>
-      </div>
+        {/* Pending */}
+        <div className="
+          min-w-[260px] sm:min-w-0
+          bg-gradient-to-br from-red-500 to-red-600
+          rounded-2xl p-6 text-white
+          shadow-lg hover:shadow-2xl hover:-translate-y-1
+          transition-all duration-300
+        ">
+          <div className="text-5xl font-extrabold">{unsolved}</div>
+          <div className="mt-2 text-sm md:text-lg font-semibold opacity-90">
+            Pending Grievances
+          </div>
+        </div>
 
-      <div className="bg-blue-500 h-[100px] w-[20%] rounded-md 
-      text-white flex flex-col justify-center items-center">
-        <div className="text-[45px] font-bold">{users}</div>
-        <div className="md:text-[20px] text-[10px] font-semibold">Users</div>
-      </div>
+        {/* Solved */}
+        <div className="
+          min-w-[260px] sm:min-w-0
+          bg-gradient-to-br from-green-500 to-green-600
+          rounded-2xl p-6 text-white
+          shadow-lg hover:shadow-2xl hover:-translate-y-1
+          transition-all duration-300
+        ">
+          <div className="text-5xl font-extrabold">{solved}</div>
+          <div className="mt-2 text-sm md:text-lg font-semibold opacity-90">
+            Solved Grievances
+          </div>
+        </div>
 
-      <div className="bg-amber-400 h-[100px] w-[20%] rounded-md 
-      text-white flex flex-col justify-center items-center">
-        <div className="text-[45px] font-bold">{officers}</div>
-        <div className="md:text-[20px] text-[10px] font-semibold">Officers</div>
+        {/* Users */}
+        <div className="
+          min-w-[260px] sm:min-w-0
+          bg-gradient-to-br from-blue-500 to-blue-600
+          rounded-2xl p-6 text-white
+          shadow-lg hover:shadow-2xl hover:-translate-y-1
+          transition-all duration-300
+        ">
+          <div className="text-5xl font-extrabold">{users}</div>
+          <div className="mt-2 text-sm md:text-lg font-semibold opacity-90">
+            Registered Users
+          </div>
+        </div>
+
+        {/* Officers */}
+        <div className="
+          min-w-[260px] sm:min-w-0
+          bg-gradient-to-br from-amber-400 to-amber-500
+          rounded-2xl p-6 text-white
+          shadow-lg hover:shadow-2xl hover:-translate-y-1
+          transition-all duration-300
+        ">
+          <div className="text-5xl font-extrabold">{officers}</div>
+          <div className="mt-2 text-sm md:text-lg font-semibold opacity-90">
+            Active Officers
+          </div>
+        </div>
+
       </div>
     </div>
   );

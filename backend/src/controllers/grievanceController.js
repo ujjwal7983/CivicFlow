@@ -93,6 +93,22 @@ export const getAllGrievances = async (req, res) => {
   }
 };
 
+// ------------------ GET Grievance Info ------------------
+export const getGrievance = async (req, res) =>{
+  try {
+    let { id } = req.params;
+    let grievance = await Grievance.findById(id).populate("createdBy").populate("assignedTo");
+
+    if(!grievance){
+      return res.status(404).json({message : "Grievance does not exsist"});
+    }
+
+    res.status(200).json(grievance);
+  } catch (err) {
+    res.status(500).json({message : "Internal Server Error"});
+  }
+}
+
 
 // ------------------ ASSIGN GRIEVANCE (ADMIN) ------------------
 export const assignGrievance = async (req, res) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Grievance({ title, department, status }) {
+function Grievance({ title, department, status, onClick }) {
 
   const statusStyle = {
         SUBMITTED:   "bg-blue-100 text-blue-600",        
@@ -24,7 +24,7 @@ function Grievance({ title, department, status }) {
       font-medium text-gray-700
       transition-all duration-200
       hover:shadow-md hover:bg-gray-50 cursor-pointer
-    ">
+    " onClick={onClick}>
       <div className="flex-1 text-left truncate">
         {title}
       </div>

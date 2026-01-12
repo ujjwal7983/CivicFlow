@@ -63,7 +63,7 @@ function Navbar() {
             src={logo}
             alt="logo"
             className="w-10 h-10 md:w-14 md:h-14 transition-transform group-hover:scale-105"
-          />
+          /> <span className="text-[24px] font-medium">Civic Flow</span>
         </div>
 
         {/* Welcome Text */}

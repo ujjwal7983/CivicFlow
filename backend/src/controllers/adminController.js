@@ -50,7 +50,8 @@ export const getData = async (req, res) => {
             citizenCount: citizen.length,
             officersCount: officers.length,
             solvedCount: solved.length,
-            unSolvedCount: unSolved.length
+            unSolvedCount: unSolved.length,
+            officers
         });
 
     } catch (err) {

@@ -2,6 +2,8 @@
 import express from "express";
 import protect from "../middlewares/authMiddleware.js";
 import User from "../models/User.js";
+import { getOfficersData } from "../controllers/adminController.js";
+import authorize from "../middlewares/roleMiddleware.js"
 
 const router = express.Router();
 
@@ -18,5 +20,7 @@ router.get("/me", protect, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.get("/getOfficerData",protect, authorize("ADMIN"), getOfficersData);
 
 export default router;

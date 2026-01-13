@@ -59,3 +59,15 @@ export const getData = async (req, res) => {
     }
 
 }
+
+export const getOfficersData = async (req, res) =>{
+    try {
+        let officers = await User.find({role : {$in : ["OFFICER","HEAD"]}});
+        let grievances = await Grievance.find().populate("assignedTo","_id");
+
+        res.status(200).json({officers, grievances});
+
+    } catch (err) {
+        res.status(500).json({message : "Internal Server Error"});
+    }
+}

@@ -44,7 +44,7 @@ function Admin() {
 
           {/* All Grievances Card */}
           <div
-            onClick={() => navigate('/allGrievances')}
+            onClick={() => navigate('/admin/allGrievances')}
             className="w-full max-w-[360px] h-[250px] cursor-pointer
             rounded-2xl border border-orange-200
             bg-gradient-to-br from-orange-50 via-white to-red-50

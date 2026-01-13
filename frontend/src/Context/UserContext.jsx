@@ -20,7 +20,7 @@ function UserContext({ children }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(serverUrl + "/api/auth/me", {
+        const res = await axios.get(serverUrl + "/api/user/me", {
           withCredentials: true,
         });
         setUserData(res.data.user); // { id, name, email, role }

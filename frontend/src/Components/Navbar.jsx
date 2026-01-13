@@ -57,14 +57,16 @@ function Navbar() {
         {/* Logo */}
         <div
           onClick={() => navigate("/")}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-2 cursor-pointer group"
         >
           <img
             src={logo}
             alt="logo"
             className="w-10 h-10 md:w-14 md:h-14 transition-transform group-hover:scale-105"
-          /> <span className="text-[24px] font-medium">Civic Flow</span>
+          />
+          <span className="text-[24px] font-medium">CivicFlow</span>
         </div>
+
 
         {/* Welcome Text */}
         {userData && (

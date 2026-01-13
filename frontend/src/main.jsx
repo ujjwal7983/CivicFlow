@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import AuthContext from './context/AuthContext.jsx'
+import AuthContext from './Context/AuthContext.jsx'
 import UserContext from './Context/UserContext.jsx'
 
 

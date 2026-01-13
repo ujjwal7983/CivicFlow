@@ -18,13 +18,16 @@ escalationJob();
 
 
 const app = express();
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://civic-flow-beta.vercel.app"
-  ],
-  credentials: true,
-}));
+const isProd = process.env.NODE_ENV === "production";
+
+app.use(
+  cors({
+    origin: isProd
+      ? "https://civic-flow-beta.vercel.app"
+      : "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 
 app.use(express.json());
@@ -40,23 +43,6 @@ app.get("/api/protected", protect, (req, res) => {
     user: req.user,
   });
 });
-
-
-// TEMP TEST ROUTE
-// app.get("/test-user", async (req, res) => {
-//   try {
-//     const user = await User.create({
-//       name: "Sample Citizen",
-//       email: `test${Date.now()}@gmail.com`,
-//       password: "test1234",
-//       role: "CITIZEN",
-//     });
-
-//     res.json(user);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/test", testRoutes);

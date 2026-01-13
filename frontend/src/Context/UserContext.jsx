@@ -13,6 +13,7 @@ function UserContext({ children }) {
   const [grievance, setGrievance] = useState(false);
   const [officer, setOfficer] = useState(false);
   const [assign, setAssign] = useState(false);
+  const [refreshGrievance, setRefreshGrievance] = useState(0);
 
   const { serverUrl } = useContext(authDataContext);
 
@@ -46,7 +47,9 @@ function UserContext({ children }) {
         assign,
         setAssign,
         selectedGrievanceId,
-        setSelectedGrievanceId
+        setSelectedGrievanceId,
+        refreshGrievance, 
+        setRefreshGrievance
       }}
     >
       {children}

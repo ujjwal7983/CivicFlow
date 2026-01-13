@@ -6,6 +6,7 @@ import { userDataContext } from '../Context/UserContext';
 function AssignGrievance() {
     const { serverUrl } = useContext(authDataContext);
     const { setAssign, selectedGrievanceId } = useContext(userDataContext);
+    const {refreshGrievance, setRefreshGrievance} = useContext(userDataContext);
     const [grievance, setGrievance] = useState(null);
     const [loading, setLoading] = useState(true);
     const [officers, setOfficers] = useState([]);
@@ -66,6 +67,7 @@ function AssignGrievance() {
 
             setGrievance(res.data.grievance);
             setShowOfficerList(false);
+            setRefreshGrievance(p=>p+1);
         } catch (err) {
             console.error(err);
             alert(err.response?.data?.message || "Assignment failed");

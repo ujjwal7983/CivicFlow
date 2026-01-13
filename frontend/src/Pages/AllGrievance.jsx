@@ -9,14 +9,13 @@ import AssignGrievance from '../Components/AssignGrievance';
 
 function AllGrievance() {
     const [grievances, setGrievances] = useState([]);
-
     const { serverUrl } = useContext(authDataContext);
-
     const {
         assign,
         setAssign,
         selectedGrievanceId,
-        setSelectedGrievanceId
+        setSelectedGrievanceId,
+        refreshGrievance
     } = useContext(userDataContext);
 
     const getGrievances = async () => {
@@ -33,7 +32,7 @@ function AllGrievance() {
 
     useEffect(() => {
         getGrievances();
-    }, [serverUrl]);
+    }, [serverUrl, refreshGrievance]);
 
     return (
         <>

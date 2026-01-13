@@ -135,6 +135,8 @@ export const assignGrievance = async (req, res) => {
     grievance.assignedAt = new Date();
 
     await grievance.save();
+    await grievance.populate("assignedTo")
+    await grievance.populate("createdBy")
 
     // ✅ AUDIT LOG
     await createAuditLog({

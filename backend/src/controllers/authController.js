@@ -15,7 +15,7 @@ const sendToken = (res, user, statusCode, message) => {
   // cookie for browser
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: "none",
+    sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     maxAge: 24 * 60 * 60 * 1000,
   });
@@ -99,7 +99,7 @@ export const signOut = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     });
 

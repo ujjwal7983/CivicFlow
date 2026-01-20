@@ -1,21 +1,67 @@
-import {useContext} from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { MdReportProblem, MdTrackChanges } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import RegisterGrievance from '../Components/RegisterGrievance';
-import {userDataContext} from '../Context/UserContext'
-
+import { userDataContext } from '../Context/UserContext'
+import { authDataContext } from '../Context/AuthContext';
+import axios from 'axios';
 function Citizen() {
   const navigate = useNavigate();
-  let {grievance, setGrievance, userData, setUserData} = useContext(userDataContext)
+  let { grievance, setGrievance, userData, setUserData } = useContext(userDataContext)
+  let { serverUrl } = useContext(authDataContext);
+  let [grievanceData, setGrievanceData] = useState([]);
+  let [totalCount, setTotalCount] = useState(0);
+  let [assignedCount, setAssignedCount] = useState(0);
+  let [progressCount, setProgressCount] = useState(0);
+  let [resolvedCount, setResolvedCount] = useState(0);
+
+  let getData = async () => {
+    try {
+      let res = await axios.get(serverUrl + "/api/grievances/my", { withCredentials: true });
+      setGrievanceData(res.data.grievances);
+      setTotalCount(res.data.count);
+    } catch (err) {
+      console.log("Error fetching grievance data:", err);
+    }
+  }
+
+  let sortData = () => {
+    grievanceData.map((g) => {
+      if (g.status === "ASSIGNED") setAssignedCount(assignedCount + 1);
+      else if (g.status === "IN_PROGRESS") setProgressCount(progressCount + 1);
+      else if (g.status === "RESOLVED") setResolvedCount(resolvedCount + 1);
+    })
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    let assigned = 0;
+    let progress = 0;
+    let resolved = 0;
+
+    grievanceData.forEach((g) => {
+      if (g.status === "ASSIGNED") assigned++;
+      else if (g.status === "IN_PROGRESS") progress++;
+      else if (g.status === "RESOLVED") resolved++;
+    });
+
+    setAssignedCount(assigned);
+    setProgressCount(progress);
+    setResolvedCount(resolved);
+  }, [grievanceData]);
+
 
   return (
     <>
-    {grievance && <RegisterGrievance/>}
+      {grievance && <RegisterGrievance />}
       <Navbar />
 
       <div className="bg-[#F3F2F0] w-full min-h-screen pt-[65px] px-4 sm:px-6 lg:px-12">
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-8 place-items-center">
 
           {/* Raise Complaint */}
@@ -64,19 +110,41 @@ function Citizen() {
             </p>
           </div>
 
-          {/* Placeholder / Future Card */}
           <div
-            className="w-full max-w-[360px] h-[250px] cursor-pointer
-              rounded-2xl border border-green-300
-              bg-gradient-to-br from-green-50 to-green-100
-              flex items-center justify-center
-              transition-all duration-300 hover:shadow-lg"
-          >
-            <span className="text-green-700 font-semibold">
-              Coming Soon
-            </span>
-          </div>
+            className="relative w-full max-w-[420px] min-h-[270px] rounded-[32px] border border-emerald-300
+              bg-gradient-to-br from-[#eafff5] via-[#d9fff1] to-[#c6fff0] p-6 shadow-[0_20px_40px_rgba(16,185,129,0.25)]
+              overflow-hidden">
 
+            <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-300/40 
+            rounded-full blur-3xl" />
+
+            <div className="absolute bottom-[-6rem] right-[-6rem] w-80 h-80 
+          bg-teal-300/40 rounded-full blur-3xl" />
+
+            <h2 className="relative text-xl font-bold text-emerald-900 text-center mb-6">
+              My Grievances
+            </h2>
+
+            <div className="relative grid grid-cols-2 gap-5">
+              {[
+                ["Submitted", totalCount, "text-blue-600"],
+                ["Assigned", assignedCount, "text-red-600"],
+                ["In Progress", progressCount, "text-amber-500"],
+                ["Resolved", resolvedCount, "text-teal-600"],
+              ].map(([label, value, color]) => (
+                <div
+                  key={label}
+                  className="bg-white rounded-2xl p-4 text-center
+                    shadow-[0_10px_25px_rgba(0,0,0,0.12)]
+                    hover:shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+                    transition"
+                >
+                  <p className="text-sm text-gray-500 mb-1">{label}</p>
+                  <p className={`text-3xl font-extrabold ${color}`}>{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -25,7 +25,6 @@ const grievanceSchema = new mongoose.Schema(
         "ASSIGNED",
         "IN_PROGRESS",
         "RESOLVED",
-        "ESCALATED",
         "CLOSED",
       ],
       default: "SUBMITTED",
@@ -67,6 +66,13 @@ const grievanceSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+
+    lastEscalationStage: {
+      type: String,
+      enum: ["ASSIGNED", "IN_PROGRESS"],
+      default: null,
+   },
+
 
     priority: {
       type: String,

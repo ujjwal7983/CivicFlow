@@ -8,8 +8,6 @@ function UserContext({ children }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedGrievanceId, setSelectedGrievanceId] = useState(null);
-
-  // Existing states (used in other components)
   const [grievance, setGrievance] = useState(false);
   const [officer, setOfficer] = useState(false);
   const [assign, setAssign] = useState(false);

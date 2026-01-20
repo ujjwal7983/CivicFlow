@@ -13,6 +13,9 @@ import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import { userDataContext } from "./Context/UserContext.jsx";
 import AllGrievance from "./Pages/AllGrievance.jsx";
 import AllOfficers from "./Pages/AllOfficers.jsx";
+import Officer from "./Pages/Officer.jsx";
+import PendingGrievance from "./Pages/PendingGrievance.jsx";
+import WorkingGrievance from "./Pages/WorkingGrievance.jsx";
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -78,6 +81,36 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Officer Route */}
+      <Route 
+        path="/officer"
+        element ={
+          <ProtectedRoute allowedRoles={["OFFICER","HEAD"]}>
+          < Officer />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route 
+        path="/officer/pending"
+        element ={
+          <ProtectedRoute allowedRoles={["OFFICER","HEAD"]}>
+          < PendingGrievance />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route 
+      path="/officer/in-progress"
+      element={
+        <ProtectedRoute allowedRoles={["OFFICER","HEAD"]}>
+          <WorkingGrievance />
+        </ProtectedRoute>
+      }
+      />  
+      
+
 
       {/* Unauthorized */}
       <Route path="/unauthorized" element={<Unauthorized />} />

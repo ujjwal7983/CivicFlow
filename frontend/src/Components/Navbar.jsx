@@ -7,6 +7,7 @@ import { authDataContext } from '../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
+
 function Navbar() {
   let { userData, setUserData, loading } = React.useContext(userDataContext);
   let { serverUrl } = React.useContext(authDataContext);
@@ -52,9 +53,7 @@ function Navbar() {
   return (
     <header className="fixed top-0 w-full z-[100]">
       <div className="h-[72px] bg-white/80 backdrop-blur-xl border-b border-gray-200
-                      flex items-center justify-between px-6 md:px-12 shadow-sm">
-
-        {/* Logo */}
+              flex items-center justify-between px-6 md:px-12 shadow-sm">
         <div
           onClick={() => navigate("/")}
           className="flex items-center gap-2 cursor-pointer group"
@@ -67,8 +66,6 @@ function Navbar() {
           <span className="text-[24px] font-medium">CivicFlow</span>
         </div>
 
-
-        {/* Welcome Text */}
         {userData && (
           <div className="hidden md:block text-gray-700 text-lg font-medium">
             Welcome back,
@@ -78,18 +75,26 @@ function Navbar() {
           </div>
         )}
 
-        {/* Right Actions */}
         {!userData ? (
-          <button
+          <div className="flex items-center gap-4">
+            <button
             onClick={() => navigate("/login")}
             className="px-5 py-2.5 inline-flex items-center gap-2 font-semibold
                        bg-gradient-to-r from-emerald-600 to-emerald-700
                        text-white rounded-xl shadow-md
                        hover:from-emerald-700 hover:to-emerald-800
-                       hover:shadow-lg transition-all"
-          >
-            Log In
+                       hover:shadow-lg transition-all"> Log In
           </button>
+
+          <button
+            onClick={() => navigate("/register")}
+            className="px-5 py-2.5 inline-flex items-center gap-2 font-semibold
+                       bg-gradient-to-r from-blue-600 to-blue-700
+                       text-white rounded-xl shadow-md
+                       hover:from-blue-700 hover:to-blue-800
+                       hover:shadow-lg transition-all"> Register
+          </button>
+          </div>
         ) : (
           <div className="flex items-center gap-3">
 

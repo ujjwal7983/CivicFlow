@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../Components/Navbar'
 import { FaRegEdit, FaClipboardList, FaUserShield } from "react-icons/fa";
+import Footer from '../Components/Footer';
 
 function Home() {
   return (
@@ -82,6 +83,8 @@ function Home() {
 
         </div>
       </section>
+
+      <Footer />
     </div>
   )
 }

@@ -13,7 +13,7 @@ router.get("/my", protect, authorize("CITIZEN"), getMyGrievances);
 router.get("/all", protect, authorize("ADMIN"), getAllGrievances)
 router.get("/getData",protect,authorize("ADMIN"), getData);
 router.get("/assigned", protect, authorize("OFFICER"), getAssignedGrievances);
-router.get("/:id", protect, authorize("ADMIN", "OFFICER", "HEAD"), getGrievance);
+router.get("/:id", protect, authorize("ADMIN", "OFFICER", "HEAD", "CITIZEN"), getGrievance);
 router.patch("/:id/assign", protect, authorize("ADMIN"), assignGrievance);
 router.patch("/:id/start", protect, authorize("OFFICER"), startGrievance);
 router.patch("/:id/resolve", protect, authorize("OFFICER"), resolveGrievance);

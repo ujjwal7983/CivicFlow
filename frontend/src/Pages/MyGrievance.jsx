@@ -4,10 +4,13 @@ import axios from 'axios'
 import Navbar from '../Components/Navbar'
 import {authDataContext} from '../Context/AuthContext'
 import Grievance from '../Components/Grievance'
+import {userDataContext} from '../Context/UserContext'
+import GrievanceTracker from '../Components/GrievanceTracker';
 
 function MyGrievance() {
     let [grievances, setGrievances] = useState([]);
     let {serverUrl} = useContext(authDataContext);
+    let {seeGrievance, setSeeGrievance, setSelectedGrievanceId, selectedGrievanceId} = useContext(userDataContext);
 
     const getGrievances = async () =>{
         try{
@@ -24,6 +27,7 @@ function MyGrievance() {
 
   return (
     <>
+    {seeGrievance && <GrievanceTracker selectedGrievanceId={selectedGrievanceId} />}
       <Navbar />
       <div className="bg-[#F3F2F0] w-full min-h-screen p-4 pt-[100px]">
 
@@ -52,8 +56,12 @@ function MyGrievance() {
             </div>
         )}
 
-        {grievances.map((grievance,idx)=>(
-            <div key={idx}><Grievance title={grievance.title} department={grievance.department} status={grievance.status} /></div>
+        {grievances.map((grievance)=>(
+            <Grievance title={grievance.title} department={grievance.department} status={grievance.status} key={grievance._id} 
+              onClick={()=>{
+                setSeeGrievance(true);
+                setSelectedGrievanceId(grievance._id);
+              }}/>
         ))}
 
       </div>

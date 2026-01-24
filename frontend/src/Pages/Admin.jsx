@@ -8,16 +8,21 @@ import { userDataContext } from '../Context/UserContext';
 
 function Admin() {
   const { officer, setOfficer } = useContext(userDataContext);
+  let [refreshTrigger, setRefreshTrigger] = React.useState(0);
   const navigate = useNavigate();
+
+  const triggerRefresh = () => {
+    setRefreshTrigger((prev) => prev + 1);
+  }
 
   return (
     <>
-      {officer && <CreateOfficer />}
+      {officer && <CreateOfficer onOfficerAdded={triggerRefresh} />}
       <Navbar />
 
       <div className="bg-[#F3F2F0] w-full min-h-screen pt-[65px] px-4 sm:px-6 lg:px-12 flex flex-col gap-8">
         {/* Data panel */}
-        <DataPanel />
+        <DataPanel refreshTrigger={refreshTrigger} />
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">

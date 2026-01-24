@@ -3,7 +3,7 @@ import { userDataContext } from '../Context/UserContext'
 import { authDataContext } from '../Context/AuthContext'
 import axios from 'axios'
 
-function CreateOfficer() {
+function CreateOfficer(props) {
     let { officer, setOfficer } = useContext(userDataContext);
     let { serverUrl } = useContext(authDataContext);
     let [name, setName] = useState("");
@@ -28,6 +28,7 @@ function CreateOfficer() {
             setEmail("");
             setPassword("");
             setRole("");
+            props.onOfficerAdded();
             setOfficer(false);
             setErr("");
         } catch (err) {
@@ -40,28 +41,20 @@ function CreateOfficer() {
     return (
         <div className="w-full h-[100vh] fixed inset-0 z-[200] flex justify-center items-center">
 
-            {/* Overlay */}
             <div className="bg-black opacity-[0.6] w-full h-full absolute inset-0"></div>
 
-            {/* Modal */}
             <div className="bg-white h-[520px] w-[90%] max-w-[400px] z-[200] rounded-lg relative">
 
-                {/* Close Button */}
                 <button
                     className="absolute bg-red-500 top-[10px] right-[10px] p-[10px]
-      text-white text-[14px] rounded-full font-bold h-[40px] w-[40px]
-      border border-red-500 hover:text-red-500 hover:bg-white"
-                    onClick={() => setOfficer(false)} disabled={loading}
-                >
-                    X
+                    text-white text-[14px] rounded-full font-bold h-[40px] w-[40px]
+                    border border-red-500 hover:text-red-500 hover:bg-white"
+                    onClick={() => setOfficer(false)} disabled={loading}>X
                 </button>
 
-                {/* Form */}
                 <form
-                    className="p-6 flex flex-col gap-4 mt-[18px]" onSubmit={handleSubmit}
-                >
+                    className="p-6 flex flex-col gap-4 mt-[18px]" onSubmit={handleSubmit}>
 
-                    {/* Name */}
                     <div className="flex flex-col gap-1 text-[18px]">
                         <label className="font-semibold text-gray-700">Name</label>
                         <input
@@ -72,11 +65,9 @@ function CreateOfficer() {
                             disabled={loading}
                             onChange={(e) => setName(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2
-          focus:outline-none focus:ring-2 focus:ring-red-400"
-                        />
+                            focus:outline-none focus:ring-2 focus:ring-red-400"/>
                     </div>
 
-                    {/* Email */}
                     <div className="flex flex-col gap-1 text-[18px]">
                         <label className="font-semibold text-gray-700">Email</label>
                         <input
@@ -87,11 +78,9 @@ function CreateOfficer() {
                             disabled={loading}
                             onChange={(e) => setEmail(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2
-          focus:outline-none focus:ring-2 focus:ring-red-400"
-                        />
+                            focus:outline-none focus:ring-2 focus:ring-red-400"/>
                     </div>
 
-                    {/* Password */}
                     <div className="flex flex-col gap-1 text-[18px]">
                         <label className="font-semibold text-gray-700">Password</label>
                         <input
@@ -102,11 +91,9 @@ function CreateOfficer() {
                             disabled={loading}
                             onChange={(e) => setPassword(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2
-          focus:outline-none focus:ring-2 focus:ring-red-400"
-                        />
+                            focus:outline-none focus:ring-2 focus:ring-red-400"/>
                     </div>
 
-                    {/* Role */}
                     <div className="flex flex-col gap-1 text-[18px]">
                         <label className="font-semibold text-gray-700">Role</label>
                         <select
@@ -115,21 +102,18 @@ function CreateOfficer() {
                             disabled={loading}
                             onChange={(e) => setRole(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2 bg-white
-          focus:outline-none focus:ring-2 focus:ring-red-400"
-                        >
+                            focus:outline-none focus:ring-2 focus:ring-red-400">
                             <option value="">Select Role</option>
                             <option value="OFFICER">Officer</option>
                             <option value="HEAD">Head</option>
                         </select>
                     </div>
 
-                    {/* Submit */}
                     <button
                         className="w-full bg-blue-500 mt-[20px] h-[50px]
                     text-white rounded-lg hover:bg-white hover:text-blue-500
                     border border-blue-500 font-bold text-[20px]"
-                        disabled={loading}
-                    >
+                        disabled={loading}>
                         {loading ? "..." : "Create Officer"}
                     </button>
 

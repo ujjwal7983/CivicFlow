@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { authDataContext } from '../Context/AuthContext';
 import axios from 'axios';
 
-function DataPanel() {
+function DataPanel({ refreshTrigger }) {
   const { serverUrl } = useContext(authDataContext);
 
   const [users, setUsers] = useState(0);
@@ -28,7 +28,7 @@ function DataPanel() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [refreshTrigger]);
 
   return (
     <div className="w-full mt-10 px-4">

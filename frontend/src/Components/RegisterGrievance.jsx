@@ -3,7 +3,7 @@ import { userDataContext } from '../Context/UserContext'
 import { authDataContext } from '../Context/AuthContext'
 import axios from 'axios'
 
-function RegisterGrievance() {
+function RegisterGrievance(props) {
     let { userData, setUserData, grievance, setGrievance } = useContext(userDataContext);
     let { serverUrl } = useContext(authDataContext);
     let [title, setTitle] = useState("");
@@ -22,6 +22,7 @@ function RegisterGrievance() {
             },{withCredentials:true});
             console.log(res);
             setLoading(false);
+            props.onGrievanceAdded();
             setGrievance(false);
         } catch (err) {
             console.log(err);

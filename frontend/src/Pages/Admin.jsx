@@ -21,12 +21,10 @@ function Admin() {
       <Navbar />
 
       <div className="bg-[#F3F2F0] w-full min-h-screen pt-[65px] px-4 sm:px-6 lg:px-12 flex flex-col gap-8">
-        {/* Data panel */}
+    
         <DataPanel refreshTrigger={refreshTrigger} />
 
-        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-          {/* Add Officer Card */}
           <div
             onClick={() => setOfficer(true)}
             className="w-full max-w-[360px] h-[250px] cursor-pointer
@@ -47,7 +45,6 @@ function Admin() {
             </p>
           </div>
 
-          {/* All Grievances Card */}
           <div
             onClick={() => navigate('/admin/allGrievances')}
             className="w-full max-w-[360px] h-[250px] cursor-pointer
@@ -68,7 +65,6 @@ function Admin() {
             </p>
           </div>
 
-          {/* Officers Profile Card */}
           <div
             onClick={() => navigate('/admin/officers')}
             className="w-full max-w-[360px] h-[250px] cursor-pointer

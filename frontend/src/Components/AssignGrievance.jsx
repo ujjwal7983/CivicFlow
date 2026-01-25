@@ -21,7 +21,7 @@ function AssignGrievance() {
                     `${serverUrl}/api/grievances/getData`,
                     { withCredentials: true }
                 );
-                setOfficers(res.data.officers);
+                setOfficers(res.data.officers.filter(o=>o.role==="OFFICER"));
             } catch (err) {
                 console.error("Failed to load officers", err);
             }

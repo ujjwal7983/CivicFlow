@@ -7,7 +7,6 @@ import { authDataContext } from '../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-
 function Navbar() {
   let { userData, setUserData, loading } = React.useContext(userDataContext);
   let { serverUrl } = React.useContext(authDataContext);
@@ -88,9 +87,9 @@ function Navbar() {
 
           <button
             onClick={() => navigate("/register")}
-            className="px-5 py-2.5 inline-flex items-center gap-2 font-semibold
+            className="px-5 py-2.5 md:inline-flex items-center gap-2 font-semibold
                        bg-gradient-to-r from-blue-600 to-blue-700
-                       text-white rounded-xl shadow-md
+                       text-white rounded-xl shadow-md hidden
                        hover:from-blue-700 hover:to-blue-800
                        hover:shadow-lg transition-all"> Register
           </button>

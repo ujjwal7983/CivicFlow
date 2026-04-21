@@ -20,70 +20,83 @@ function Admin() {
       {officer && <CreateOfficer onOfficerAdded={triggerRefresh} />}
       <Navbar />
 
-      <div className="bg-[#F3F2F0] w-full min-h-screen pt-[65px] px-4 sm:px-6 lg:px-12 flex flex-col gap-8">
-    
-        <DataPanel refreshTrigger={refreshTrigger} />
+      <div className="bg-[#f8fafc] w-full min-h-screen pt-24 pb-12 px-4 sm:px-8 lg:px-16 flex flex-col gap-10">
+        
+        {/* Statistics Section */}
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="mb-6 ml-2">
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">System Administration</h1>
+            <p className="text-slate-500 font-medium mt-1">Monitor system health and manage personnel.</p>
+          </div>
+          <DataPanel refreshTrigger={refreshTrigger} />
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+        {/* Action Grid */}
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          {/* Add Officer Card */}
           <div
             onClick={() => setOfficer(true)}
-            className="w-full max-w-[360px] h-[250px] cursor-pointer
-            rounded-2xl border border-blue-200
-            bg-gradient-to-br from-blue-50 via-white to-blue-100
-            flex flex-col items-center justify-center gap-3
-            transition-all duration-300
-            hover:shadow-xl hover:-translate-y-1"
+            className="group relative w-full h-[280px] cursor-pointer rounded-[2.5rem] border border-slate-200 bg-white 
+                       flex flex-col items-center justify-center gap-4 transition-all duration-500 
+                       hover:shadow-[0_20px_50px_-15px_rgba(59,130,246,0.15)] hover:-translate-y-1 active:scale-[0.98]"
           >
-            <div className="bg-blue-100 p-4 rounded-full">
-              <MdPersonAdd className="text-blue-600 text-[55px]" />
+            <div className="bg-blue-50 w-20 h-20 rounded-3xl flex items-center justify-center transition-colors duration-300 group-hover:bg-blue-600">
+              <MdPersonAdd className="text-blue-600 text-4xl transition-colors duration-300 group-hover:text-white" />
             </div>
-            <h2 className="text-2xl font-semibold text-blue-800 text-center">
-              Add New Officer
-            </h2>
-            <p className="text-sm text-gray-600 text-center px-6">
-              Create a new officer account, assign roles, and manage departmental access.
-            </p>
+            <div className="text-center px-8">
+              <h2 className="text-2xl font-black text-slate-800 tracking-tight">Add Officer</h2>
+              <p className="text-sm font-medium text-slate-500 mt-2 leading-relaxed">
+                Onboard new personnel and assign departmental roles.
+              </p>
+            </div>
+            <div className="absolute top-6 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+               <span className="text-blue-600 font-bold">+</span>
+            </div>
           </div>
 
+          {/* All Grievances Card */}
           <div
             onClick={() => navigate('/admin/allGrievances')}
-            className="w-full max-w-[360px] h-[250px] cursor-pointer
-            rounded-2xl border border-orange-200
-            bg-gradient-to-br from-orange-50 via-white to-red-50
-            flex flex-col items-center justify-center gap-3
-            transition-all duration-300
-            hover:shadow-xl hover:-translate-y-1"
+            className="group relative w-full h-[280px] cursor-pointer rounded-[2.5rem] border border-slate-200 bg-white 
+                       flex flex-col items-center justify-center gap-4 transition-all duration-500 
+                       hover:shadow-[0_20px_50px_-15px_rgba(249,115,22,0.15)] hover:-translate-y-1 active:scale-[0.98]"
           >
-            <div className="bg-orange-100 p-4 rounded-full">
-              <MdOutlineReportProblem className="text-orange-600 text-[55px]" />
+            <div className="bg-orange-50 w-20 h-20 rounded-3xl flex items-center justify-center transition-colors duration-300 group-hover:bg-orange-600">
+              <MdOutlineReportProblem className="text-orange-600 text-4xl transition-colors duration-300 group-hover:text-white" />
             </div>
-            <h2 className="text-2xl font-semibold text-orange-800 text-center">
-              All Grievances
-            </h2>
-            <p className="text-sm text-gray-700 text-center px-6">
-              View, monitor, and manage all registered complaints across departments.
-            </p>
+            <div className="text-center px-8">
+              <h2 className="text-2xl font-black text-slate-800 tracking-tight">System Records</h2>
+              <p className="text-sm font-medium text-slate-500 mt-2 leading-relaxed">
+                Monitor and oversee all registered grievances system-wide.
+              </p>
+            </div>
+            <div className="absolute top-6 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+               <span className="text-orange-600 font-bold">→</span>
+            </div>
           </div>
 
+          {/* Officers Profile Card */}
           <div
             onClick={() => navigate('/admin/officers')}
-            className="w-full max-w-[360px] h-[250px] cursor-pointer
-            rounded-2xl border border-emerald-200
-            bg-gradient-to-br from-emerald-50 via-white to-green-50
-            flex flex-col items-center justify-center gap-3
-            transition-all duration-300
-            hover:shadow-xl hover:-translate-y-1"
+            className="group relative w-full h-[280px] cursor-pointer rounded-[2.5rem] border border-slate-200 bg-white 
+                       flex flex-col items-center justify-center gap-4 transition-all duration-500 
+                       hover:shadow-[0_20px_50px_-15px_rgba(16,185,129,0.15)] hover:-translate-y-1 active:scale-[0.98]"
           >
-            <div className="bg-emerald-100 p-4 rounded-full">
-              <MdPerson className="text-emerald-600 text-[55px]" />
+            <div className="bg-emerald-50 w-20 h-20 rounded-3xl flex items-center justify-center transition-colors duration-300 group-hover:bg-emerald-600">
+              <MdPerson className="text-emerald-600 text-4xl transition-colors duration-300 group-hover:text-white" />
             </div>
-            <h2 className="text-2xl font-semibold text-emerald-800 text-center">
-              Officers Profile
-            </h2>
-            <p className="text-sm text-gray-700 text-center px-6">
-              View all officers, manage roles, and track assigned complaints.
-            </p>
+            <div className="text-center px-8">
+              <h2 className="text-2xl font-black text-slate-800 tracking-tight">Officer Profiles</h2>
+              <p className="text-sm font-medium text-slate-500 mt-2 leading-relaxed">
+                Manage active officers and audit their resolution history.
+              </p>
+            </div>
+            <div className="absolute top-6 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+               <span className="text-emerald-600 font-bold">→</span>
+            </div>
           </div>
+
         </div>
       </div>
     </>

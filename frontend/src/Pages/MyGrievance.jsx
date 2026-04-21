@@ -1,72 +1,90 @@
-import {useState, useContext, useEffect} from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { MdOutlineInbox } from "react-icons/md";
 import axios from 'axios'
 import Navbar from '../Components/Navbar'
-import {authDataContext} from '../Context/AuthContext'
+import { authDataContext } from '../Context/AuthContext'
 import Grievance from '../Components/Grievance'
-import {userDataContext} from '../Context/UserContext'
+import { userDataContext } from '../Context/UserContext'
 import GrievanceTracker from '../Components/GrievanceTracker';
 
 function MyGrievance() {
     let [grievances, setGrievances] = useState([]);
-    let {serverUrl} = useContext(authDataContext);
-    let {seeGrievance, setSeeGrievance, setSelectedGrievanceId, selectedGrievanceId} = useContext(userDataContext);
+    let { serverUrl } = useContext(authDataContext);
+    let { seeGrievance, setSeeGrievance, setSelectedGrievanceId, selectedGrievanceId } = useContext(userDataContext);
 
-    const getGrievances = async () =>{
-        try{
-            let res = await axios.get(serverUrl+"/api/grievances/my",{withCredentials:true});
+    const getGrievances = async () => {
+        try {
+            let res = await axios.get(serverUrl + "/api/grievances/my", { withCredentials: true });
             setGrievances(res.data.grievances)
         } catch (err) {
             console.log(err);
         }
     }
-    
-    useEffect(() => { 
-            getGrievances();
+
+    useEffect(() => {
+        getGrievances();
     }, []);
 
-  return (
-    <>
-    {seeGrievance && <GrievanceTracker selectedGrievanceId={selectedGrievanceId} />}
-      <Navbar />
-      <div className="bg-[#F3F2F0] w-full min-h-screen p-4 pt-[100px]">
+    return (
+        <>
+            {seeGrievance && <GrievanceTracker selectedGrievanceId={selectedGrievanceId} />}
+            <Navbar />
+            <div className="bg-[#f8fafc] w-full min-h-screen pt-28 pb-12 px-4 sm:px-8">
 
-        <div className="
-          w-full max-w-6xl mx-auto
-          h-[70px]
-          px-6 lg:px-10
-          flex items-center
-          bg-white rounded-2xl
-          shadow-md border border-gray-200
-          text-sm sm:text-base lg:text-lg
-          font-semibold text-gray-500
-        ">
-          <div className="flex-1 text-left">Title</div>
-          <div className="flex-1 text-center hidden md:inline-block">Department</div>
-          <div className="flex-1 text-right">Status</div>
-        </div>
+                <div className="max-w-6xl mx-auto">
+                    {/* Page Header */}
+                    <div className="mb-8 ml-2">
+                        <h1 className="text-3xl font-black text-slate-900 tracking-tight">My Grievances</h1>
+                        <p className="text-slate-500 font-medium mt-1">Track and manage your submitted reports</p>
+                    </div>
 
-        {grievances.length === 0 && (
-            <div className="flex flex-col items-center justify-center h-[300px] text-gray-500">
-                <MdOutlineInbox size={60} className="mb-4 text-gray-400" />
-                <h2 className="text-lg font-semibold">No grievances found</h2>
-                <p className="text-sm text-gray-400 mt-1">
-                    No Data to show
-                </p>
+                    {/* Table Header Wrapper */}
+                    <div className="
+                        w-full h-14 px-8 mb-4
+                        flex items-center
+                        bg-slate-900 rounded-2xl
+                        shadow-lg shadow-slate-200
+                        text-[11px] uppercase tracking-[0.2em]
+                        font-black text-slate-400
+                    ">
+                        <div className="flex-1 text-left">Title</div>
+                        <div className="flex-1 text-center hidden md:inline-block">Department</div>
+                        <div className="flex-1 text-right">Status</div>
+                    </div>
+
+                    {/* Content List */}
+                    <div className="space-y-3">
+                        {grievances.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[2rem] border border-dashed border-slate-200">
+                                <div className="bg-slate-50 p-5 rounded-full mb-4">
+                                    <MdOutlineInbox size={50} className="text-slate-300" />
+                                </div>
+                                <h2 className="text-lg font-bold text-slate-800">No grievances found</h2>
+                                <p className="text-sm text-slate-400 font-medium mt-1">
+                                    Your submission history is empty
+                                </p>
+                            </div>
+                        ) : (
+                            grievances.map((grievance) => (
+                                <div key={grievance._id} className="transition-transform active:scale-[0.99] cursor-pointer">
+                                    <Grievance
+                                        title={grievance.title}
+                                        department={grievance.department}
+                                        status={grievance.status}
+                                        onClick={() => {
+                                            setSeeGrievance(true);
+                                            setSelectedGrievanceId(grievance._id);
+                                        }}
+                                    />
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+
             </div>
-        )}
-
-        {grievances.map((grievance)=>(
-            <Grievance title={grievance.title} department={grievance.department} status={grievance.status} key={grievance._id} 
-              onClick={()=>{
-                setSeeGrievance(true);
-                setSelectedGrievanceId(grievance._id);
-              }}/>
-        ))}
-
-      </div>
-    </>
-  )
+        </>
+    )
 }
 
 export default MyGrievance

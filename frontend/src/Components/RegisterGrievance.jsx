@@ -1,101 +1,130 @@
 import { useContext, useState } from 'react'
 import { userDataContext } from '../Context/UserContext'
 import { authDataContext } from '../Context/AuthContext'
+import { HiX } from "react-icons/hi"; // Added for a cleaner close icon
 import axios from 'axios'
 
 function RegisterGrievance(props) {
-    let { userData, setUserData, grievance, setGrievance } = useContext(userDataContext);
+    let { setGrievance } = useContext(userDataContext);
     let { serverUrl } = useContext(authDataContext);
     let [title, setTitle] = useState("");
     let [description, setDescription] = useState("");
     let [department, setDepartment] = useState("");
     let [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            let res = await axios.post(serverUrl+"/api/grievances/",{
+            await axios.post(serverUrl + "/api/grievances/", {
                 title,
                 description,
                 department
-            },{withCredentials:true});
-            console.log(res);
+            }, { withCredentials: true });
+            
             setLoading(false);
             props.onGrievanceAdded();
             setGrievance(false);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setLoading(false);
             setGrievance(false);
         }
     }
 
     return (
-        <div className="fixed w-[100%] h-[100vh] top-0 z-[200] inset-0 flex justify-center items-center">
-            <div className='bg-black opacity-[0.6] inset-0  absolute w-[100%] h-full'></div>
-            <div className="bg-white h-[550px] w-[90%] max-w-[400px] z-[200] rounded-lg relative">
-                <button className="absolute bg-red-500 top-[10px] right-[10px] p-[10px] 
-                text-white text-[14px] rounded-full font-bold h-[40px] w-[40px]
-                border border-red-500 hover:text-red-500 hover:bg-white"
-                    onClick={() => setGrievance(false)}>X
+        <div className="fixed inset-0 z-[200] flex justify-center items-center px-4 animate-in fade-in duration-300">
+            {/* Backdrop with Blur */}
+            <div 
+                className='bg-slate-900/40 backdrop-blur-md absolute inset-0 w-full h-full'
+                onClick={() => setGrievance(false)}
+            ></div>
+            
+            {/* Modal Container */}
+            <div className="bg-white w-full max-w-[480px] z-[210] rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden">
+                
+                {/* Close Button */}
+                <button 
+                    className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all"
+                    onClick={() => setGrievance(false)}
+                >
+                    <HiX className="text-2xl" />
                 </button>
 
-                <form className="p-6 flex flex-col gap-4 mt-[18px]" onSubmit={handleSubmit}>
-
-                    <div className="flex flex-col gap-1 text-[20px]">
-                        <label htmlFor="title" className=" font-semibold text-gray-700">
-                            Title
-                        </label>
-                        <input
-                            type="text"
-                            id="title"
-                            placeholder="Enter complaint title"
-                            value={title}
-                            required
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
-                        />
+                <div className="p-8 md:p-10">
+                    <div className="mb-8">
+                        <h2 className="text-2xl font-black text-slate-900 tracking-tight">New Grievance</h2>
+                        <p className="text-slate-500 font-medium text-sm mt-1">Please provide detailed information about the issue.</p>
                     </div>
 
-                    <div className="flex flex-col gap-1 text-[18px]">
-                        <label htmlFor="department" className="text-sm font-semibold text-gray-700">
-                            Department
-                        </label>
-                        <select
-                            id="department"
-                            value={department}
-                            required
-                            onChange={(e) => setDepartment(e.target.value)}
-                            className="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-red-400"
+                    <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+                        {/* Title Input */}
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="title" className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">
+                                Complaint Title
+                            </label>
+                            <input
+                                type="text"
+                                id="title"
+                                placeholder="e.g. Street light not working"
+                                value={title}
+                                required
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium text-slate-800"
+                            />
+                        </div>
+
+                        {/* Department Select */}
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="department" className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">
+                                Department
+                            </label>
+                            <select
+                                id="department"
+                                value={department}
+                                required
+                                onChange={(e) => setDepartment(e.target.value)}
+                                className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium text-slate-800 appearance-none"
+                            >
+                                <option value="" disabled>Select Category</option>
+                                <option value="Water">Water Supply</option>
+                                <option value="Electricity">Electricity</option>
+                                <option value="Roads">Roads & Infrastructure</option>
+                                <option value="Sanitation">Sanitation</option>
+                                <option value="Municipal">Municipal Corporation</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+
+                        {/* Description Textarea */}
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="description" className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">
+                                Detailed Description
+                            </label>
+                            <textarea
+                                id="description"
+                                placeholder="Provide specific landmarks or timing details..."
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                                className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium text-slate-800 h-[140px] resize-none"
+                            />
+                        </div>
+
+                        {/* Submit Button */}
+                        <button 
+                            className="w-full bg-slate-900 text-white h-14 rounded-2xl font-bold hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4" 
+                            disabled={loading}
                         >
-                            <option value="">Select Department</option>
-                            <option value="Water">Water Supply</option>
-                            <option value="Electricity">Electricity</option>
-                            <option value="Roads">Roads & Infrastructure</option>
-                            <option value="Sanitation">Sanitation</option>
-                            <option value="Municipal">Municipal Corporation</option>
-                            <option value="Others">Others</option>
-                        </select>
-                    </div>
-
-                    <div className="flex flex-col gap-1 text-[18px]">
-                        <label htmlFor="description" className="text-sm font-semibold text-gray-700">
-                            Description
-                        </label>
-                        <textarea
-                            id="description"
-                            placeholder="Describe your problem in detail"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                            className="border border-gray-300 rounded-lg px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-red-400 w-[100%] h-[200px]"
-                        />
-                    </div>
-                    <button className="w-full bg-blue-500 mt-[20px] h-[50px] 
-                    text-white rounded-lg hover:bg-white hover:text-blue-500 border border-blue-500
-                    font-bold text-[20px]" disabled={loading}>{loading?"...":"Submit"}</button>
-                </form>
+                            {loading ? (
+                                <>
+                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    <span>Submitting...</span>
+                                </>
+                            ) : "Submit Grievance"}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     )

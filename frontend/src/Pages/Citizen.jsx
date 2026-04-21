@@ -6,9 +6,10 @@ import RegisterGrievance from '../Components/RegisterGrievance';
 import { userDataContext } from '../Context/UserContext'
 import { authDataContext } from '../Context/AuthContext';
 import axios from 'axios';
+
 function Citizen() {
   const navigate = useNavigate();
-  let { grievance, setGrievance, userData, setUserData } = useContext(userDataContext)
+  let { grievance, setGrievance, userData } = useContext(userDataContext)
   let { serverUrl } = useContext(authDataContext);
   let [grievanceData, setGrievanceData] = useState([]);
   let [totalCount, setTotalCount] = useState(0);
@@ -49,93 +50,111 @@ function Citizen() {
     setResolvedCount(resolved);
   }, [grievanceData]);
 
-
   return (
     <>
       {grievance && <RegisterGrievance onGrievanceAdded={handleRefresh} />}
       <Navbar />
 
-      <div className="bg-[#F3F2F0] w-full min-h-screen pt-[65px] px-4 sm:px-6 lg:px-12">
+      <div className="bg-[#f8fafc] w-full min-h-screen pt-24 pb-12 px-4 sm:px-8 lg:px-16">
+        
+        {/* Header Section */}
+        <div className="max-w-7xl mx-auto mb-10">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Citizen Dashboard</h1>
+          <p className="text-slate-500 font-medium mt-1">Manage your reports and track community progress.</p>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-8 place-items-center">
-          <div onClick={() => setGrievance(true)}
-            className="w-full max-w-[360px] h-[250px] cursor-pointer
-              rounded-2xl border border-red-200
-              bg-gradient-to-br from-red-50 via-white to-red-100
-              flex flex-col items-center justify-center gap-3
-              transition-all duration-300
-              hover:shadow-2xl hover:-translate-y-1">
-
-            <div className="bg-red-100 p-4 rounded-full">
-              <MdReportProblem className="text-red-600 text-[55px]" />
-            </div>
-
-            <h2 className="text-2xl font-semibold text-red-800 text-center">
-              Raise a Complaint
-            </h2>
-
-            <p className="text-sm text-gray-600 text-center px-6">
-              Report civic issues like road damage, water supply, electricity, and more.
-            </p>
-          </div>
-
-          <div
-            onClick={() => navigate("/my")}
-            className="w-full max-w-[360px] h-[250px] cursor-pointer
-              rounded-2xl border border-teal-200
-              bg-gradient-to-br from-teal-50 via-white to-teal-100
-              flex flex-col items-center justify-center gap-3
-              transition-all duration-300
-              hover:shadow-xl hover:-translate-y-1">
-
-            <div className="bg-teal-100 p-4 rounded-full">
-              <MdTrackChanges className="text-teal-600 text-[55px]" />
-            </div>
-
-            <h2 className="text-2xl font-semibold text-teal-800 text-center">
-              Track My Complaints
-            </h2>
-
-            <p className="text-sm text-gray-600 text-center px-6">
-              View status, updates, and resolution progress of your submitted complaints.
-            </p>
-          </div>
-
-          <div
-            className="relative w-full max-w-[420px] min-h-[270px] rounded-[32px] border border-emerald-300
-              bg-gradient-to-br from-[#eafff5] via-[#d9fff1] to-[#c6fff0] p-6 shadow-[0_20px_40px_rgba(16,185,129,0.25)]
-              overflow-hidden">
-
-            <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-300/40 
-            rounded-full blur-3xl" />
-
-            <div className="absolute bottom-[-6rem] right-[-6rem] w-80 h-80 
-          bg-teal-300/40 rounded-full blur-3xl" />
-
-            <h2 className="relative text-xl font-bold text-emerald-900 text-center mb-6">
-              My Grievances
-            </h2>
-
-            <div className="relative grid grid-cols-2 gap-5">
-              {[
-                ["Submitted", totalCount, "text-blue-600"],
-                ["Assigned", assignedCount, "text-red-600"],
-                ["In Progress", progressCount, "text-amber-500"],
-                ["Resolved", resolvedCount, "text-teal-600"],
-              ].map(([label, value, color]) => (
-                <div
-                  key={label}
-                  className="bg-white rounded-2xl p-4 text-center
-                    shadow-[0_10px_25px_rgba(0,0,0,0.12)]
-                    hover:shadow-[0_20px_40px_rgba(0,0,0,0.18)]
-                    transition"
-                >
-                  <p className="text-sm text-gray-500 mb-1">{label}</p>
-                  <p className={`text-3xl font-extrabold ${color}`}>{value}</p>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Action Cards (Left Side) */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+            
+            {/* Raise Complaint */}
+            <div 
+              onClick={() => setGrievance(true)}
+              className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 border border-slate-200 
+                         shadow-[0_4px_20px_-5px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(239,68,68,0.15)] 
+                         transition-all duration-500 cursor-pointer active:scale-[0.98]"
+            >
+              <div className="relative z-10">
+                <div className="bg-red-50 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 
+                                group-hover:bg-red-600 transition-colors duration-300">
+                  <MdReportProblem className="text-red-600 text-3xl group-hover:text-white transition-colors" />
                 </div>
-              ))}
+                <h2 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">Raise a Complaint</h2>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                  Report issues like road damage, water supply, or electricity failures to your local authority.
+                </p>
+              </div>
+              <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                 <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                    <span className="text-red-600 font-bold">→</span>
+                 </div>
+              </div>
+            </div>
+
+            {/* Track My Complaints */}
+            <div 
+              onClick={() => navigate("/my")}
+              className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 border border-slate-200 
+                         shadow-[0_4px_20px_-5px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(20,184,166,0.15)] 
+                         transition-all duration-500 cursor-pointer active:scale-[0.98]"
+            >
+              <div className="relative z-10">
+                <div className="bg-teal-50 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 
+                                group-hover:bg-teal-600 transition-colors duration-300">
+                  <MdTrackChanges className="text-teal-600 text-3xl group-hover:text-white transition-colors" />
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">Track Progress</h2>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">
+                  Monitor the real-time status and resolution updates for all your submitted grievances.
+                </p>
+              </div>
+              <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                 <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center">
+                    <span className="text-teal-600 font-bold">→</span>
+                 </div>
+              </div>
             </div>
           </div>
+
+          {/* Stats Card (Right Side) */}
+          <div className="lg:col-span-5 w-full">
+            <div className="relative bg-slate-900 rounded-[3rem] p-8 overflow-hidden shadow-2xl shadow-slate-200">
+              {/* Animated Background Decor */}
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/20 rounded-full blur-[80px]" />
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/20 rounded-full blur-[80px]" />
+
+              <div className="relative">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-xl font-bold text-white tracking-tight">Personal Statistics</h2>
+                  <span className="px-3 py-1 bg-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-emerald-400 border border-white/10">
+                    Live Updates
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    ["Submitted", totalCount, "bg-blue-500/10", "text-blue-400"],
+                    ["Assigned", assignedCount, "bg-red-500/10", "text-red-400"],
+                    ["In Progress", progressCount, "bg-amber-500/10", "text-amber-400"],
+                    ["Resolved", resolvedCount, "bg-emerald-500/10", "text-emerald-400"],
+                  ].map(([label, value, bgColor, textColor]) => (
+                    <div key={label} className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] p-6">
+                      <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">{label}</p>
+                      <p className={`text-4xl font-black ${textColor}`}>{value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-white/5">
+                    <p className="text-slate-500 text-xs text-center italic">
+                      Data reflects grievances submitted via this account.
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </>

@@ -6,61 +6,70 @@ import { MdOutlineInbox } from "react-icons/md"
 import OfficerCard from '../Components/OfficerCard'
 
 function AllOfficers() {
-  const [officers,setOfficers]=useState([])
-  const [grievances,setGrievances]=useState([])
-  const {serverUrl}=useContext(authDataContext)
+  const [officers, setOfficers] = useState([])
+  const [grievances, setGrievances] = useState([])
+  const { serverUrl } = useContext(authDataContext)
 
-  const fetchData=async()=>{
-    try{
-      const res=await axios.get(
-        serverUrl+"/api/user/getOfficerData",
-        {withCredentials:true}
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        serverUrl + "/api/user/getOfficerData",
+        { withCredentials: true }
       )
       setOfficers(res.data.officers)
       setGrievances(res.data.grievances)
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log("Error fetching officer data:", err)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData()
-  },[])
+  }, [])
 
-  return(
+  return (
     <>
-      <Navbar/>
+      <Navbar />
 
-      <div className="bg-[#F3F2F0] w-full min-h-[100vh] pt-[80px] px-4 sm:px-6 lg:px-12">
-
-        {officers.length===0 && (
-          <div className="flex flex-col items-center justify-center h-[300px] text-gray-500">
-            <MdOutlineInbox size={60} className="mb-4 text-gray-400"/>
-            <h2 className="text-lg font-semibold">No Officers found</h2>
-            <p className="text-sm text-gray-400 mt-1">No Data to show</p>
-          </div>
-        )}
+      <div className="bg-[#f8fafc] w-full min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-12">
+        
+        {/* Page Header */}
+        <div className="max-w-7xl mx-auto mb-10 ml-2">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Officer Directory</h1>
+          <p className="text-slate-500 font-medium mt-1">Manage personnel and monitor departmental caseloads.</p>
+        </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 py-8 place-items-center">
-            {officers.map(officer=>{
-              const count=grievances.filter(g =>
-                (typeof g.assignedTo==="string"
-                  ? g.assignedTo
-                  : g.assignedTo?._id) === officer._id
-              ).length
+          {officers.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-32 bg-white rounded-[3rem] border border-dashed border-slate-200">
+              <div className="bg-slate-50 p-6 rounded-full mb-4">
+                <MdOutlineInbox size={60} className="text-slate-300" />
+              </div>
+              <h2 className="text-xl font-bold text-slate-800">No Officers found</h2>
+              <p className="text-sm text-slate-400 font-medium mt-1">No personnel data available to display</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-4">
+              {officers.map(officer => {
+                const count = grievances.filter(g =>
+                  (typeof g.assignedTo === "string"
+                    ? g.assignedTo
+                    : g.assignedTo?._id) === officer._id
+                ).length
 
-              return(
-                <OfficerCard
-                  key={officer._id}
-                  name={officer.name}
-                  email={officer.email}
-                  role={officer.role}
-                  count={count}
-                />
-              )
-            })}
-          </div>
+                return (
+                  <div key={officer._id} className="w-full flex justify-center">
+                    <OfficerCard
+                      name={officer.name}
+                      email={officer.email}
+                      role={officer.role}
+                      count={count}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
       </div>
